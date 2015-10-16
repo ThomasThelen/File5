@@ -1,0 +1,29 @@
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition="'$(Force-Enable-openssl-v120-windesktop-msvcstl-dyn-rt-dyn-x64)' == '' And ('$(PlatformToolset)' != 'v120' Or '$(ApplicationType)' != '' Or '$(Platform)' != 'x64')">
+    <Disable-openssl-v120-windesktop-msvcstl-dyn-rt-dyn-x64>true</Disable-openssl-v120-windesktop-msvcstl-dyn-rt-dyn-x64>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Force-Disable-openssl-v120-windesktop-msvcstl-dyn-rt-dyn-x64)' != ''">
+    <Disable-openssl-v120-windesktop-msvcstl-dyn-rt-dyn-x64>true</Disable-openssl-v120-windesktop-msvcstl-dyn-rt-dyn-x64>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Disable-openssl-v120-windesktop-msvcstl-dyn-rt-dyn-x64)' == ''">
+    <Link>
+      <AdditionalDependencies Condition="'$(Configuration)' == 'debug'">$(MSBuildThisFileDirectory)..\..\lib\native\v120\windesktop\msvcstl\dyn\rt-dyn\x64\debug\libeay32.lib;$(MSBuildThisFileDirectory)..\..\lib\native\v120\windesktop\msvcstl\dyn\rt-dyn\x64\debug\ssleay32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(Configuration)' == 'release'">$(MSBuildThisFileDirectory)..\..\lib\native\v120\windesktop\msvcstl\dyn\rt-dyn\x64\release\libeay32.lib;$(MSBuildThisFileDirectory)..\..\lib\native\v120\windesktop\msvcstl\dyn\rt-dyn\x64\release\ssleay32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup Condition="'$(Configuration)' == 'debug' And '$(Disable-openssl-v120-windesktop-msvcstl-dyn-rt-dyn-x64)' == ''">
+    <ReferenceCopyLocalPaths Include="$(MSBuildThisFileDirectory)..\..\lib\native\v120\windesktop\msvcstl\dyn\rt-dyn\x64\debug\libeay32.dll" />
+    <ReferenceCopyLocalPaths Include="$(MSBuildThisFileDirectory)..\..\lib\native\v120\windesktop\msvcstl\dyn\rt-dyn\x64\debug\libeay32.pdb" />
+    <ReferenceCopyLocalPaths Include="$(MSBuildThisFileDirectory)..\..\lib\native\v120\windesktop\msvcstl\dyn\rt-dyn\x64\debug\ssleay32.dll" />
+    <ReferenceCopyLocalPaths Include="$(MSBuildThisFileDirectory)..\..\lib\native\v120\windesktop\msvcstl\dyn\rt-dyn\x64\debug\ssleay32.pdb" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)' == 'release' And '$(Disable-openssl-v120-windesktop-msvcstl-dyn-rt-dyn-x64)' == ''">
+    <ReferenceCopyLocalPaths Include="$(MSBuildThisFileDirectory)..\..\lib\native\v120\windesktop\msvcstl\dyn\rt-dyn\x64\release\libeay32.dll" />
+    <ReferenceCopyLocalPaths Include="$(MSBuildThisFileDirectory)..\..\lib\native\v120\windesktop\msvcstl\dyn\rt-dyn\x64\release\libeay32.pdb" />
+    <ReferenceCopyLocalPaths Include="$(MSBuildThisFileDirectory)..\..\lib\native\v120\windesktop\msvcstl\dyn\rt-dyn\x64\release\ssleay32.dll" />
+    <ReferenceCopyLocalPaths Include="$(MSBuildThisFileDirectory)..\..\lib\native\v120\windesktop\msvcstl\dyn\rt-dyn\x64\release\ssleay32.pdb" />
+  </ItemGroup>
+</Project>

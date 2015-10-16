@@ -1,5 +1,17 @@
-// ConsoleApplication1.cpp : Defines the entry point for the console application.
-//
+/*
+Author: Thomas Thelen
+Project Page: https://github.com/ThomasThelen/File5
+
+Explanation: 
+			The program finds files by looping through directories and storing them in vectors.
+			Once the vector reaches the allotted size, it is sent to the MD5 function where openssl is implemented.
+			The MD5 and file path are then written to a file where furthen analysis can be performed.
+
+Further Possibilities:
+					 Use python to check the sums against a database online or on disk.	 
+*/
+
+
 
 #include "stdafx.h"
 #include <iostream>
@@ -16,34 +28,43 @@
 #include <openssl/md5.h>
 #include <errno.h>
 
-using namespace std;
+using std::vector;
+using std::string;
+using std::cout;
+using std::endl;
 
 int ComputeMd5(vector<string> file_list, FILE* data_file);
 
-vector<string> FindFiles()
+void FindFiles()
 {
-	WIN32_FIND_DATA file_data; // A structure of information about the file.
-	vector<string> exe_list; // A container for the list of exe files.
-	string home_directory; // Holds the path for the home directory
-	string current_directory;
-	string directory;
-	string filestring; // Holds the filename in a string for manipulation 
-	vector<string> directories;
-	string filepath;
+	vector<string> exe_list, // A container for the list of exe files.
+				   directories, // Contains all of the directories.
+				   empty;  // Empty vector used to return an error.
+
+	string		   home_directory, // Holds the path for the home directory.
+				   current_directory,  // The current directory that the searching loop is in.
+			       directory,  // 
+				   filestring, // Holds the filename in a string for manipulation.
+			       filepath, // Is directory+filestring. Holds the absolute path of the file.
+				   first_directory = home_directory;
+	
+
 	HANDLE searcher_handle = NULL;
-	string first_directory = home_directory;
-	DWORD binary_type;
-	vector<string> empty;
+	DWORD binary_type; // Holds the returned binary type from GetBinaryType()
 	FILE *data_handle;
+	WIN32_FIND_DATA file_data; // Holds information about a single file. It isused to determine if the file is a directory.
+
+
 
 	// Get the system directory
 	home_directory = getenv("SYSTEMDRIVE"); // Get the drive letter
+	data_handle = fopen("file5.txt", "a"); // Open a handle to the file which holds the results
+
 	if (home_directory == "NULL") // Check for failure
 	{
 		MessageBoxA(NULL, "Failed to get home directoy", "Error", MB_OK);
-		return empty;
 	}
-	cout << "Home Directory: " + home_directory << endl << endl; // Verify results
+	std::cout << "Home Directory: " + home_directory << std::endl << std::endl; // Verify results
 	filestring = file_data.cFileName;
 	directories.push_back(first_directory);
 	int j = 0, k = 0;
@@ -59,9 +80,7 @@ vector<string> FindFiles()
 			cout << GetLastError() << endl;
 			MessageBoxA(NULL, "" + GetLastError(), "Error", MB_OK);
 			FindClose(searcher_handle);
-			return empty;
 		}
-
 
 		// Iterate through a directory
 		current_directory.pop_back();
@@ -75,13 +94,12 @@ vector<string> FindFiles()
 			if (file_data.dwFileAttributes == FILE_ATTRIBUTE_DIRECTORY)
 			{
 				directories.push_back(directory);
-				//cout << "Directory: " << directories[j] << endl;
 				j = j + 1;
 			}
 
-			if (filestring.find(".exe") != string::npos)
+			if (filestring.find(".exe") != string::npos) //Check if the file is an .exe
 			{
-				exe_list.push_back(filepath); // Put the exe name in the exe_list container
+				exe_list.push_back(filepath); // Put the exe name in the exe_list container -----------------------------------------------JUST WRITE TO FILE
 				k = k + 1;
 				if (k > 10)
 				{
@@ -94,12 +112,9 @@ vector<string> FindFiles()
 
 	}
 	FindClose(searcher_handle);
-	cout << endl << "========" << endl;
-	cout << "Finished Locating Files" << endl;
-	return exe_list; // Return the vector with the list of exe files
 }
 
-int ComputeMd5(vector<string> file_list, FILE* data_file)
+int ComputeMd5(vector<string> file_list, FILE* dataa_file)
 {
 	FILE *file;
 	MD5_CTX  md5_hash;
@@ -127,12 +142,11 @@ int ComputeMd5(vector<string> file_list, FILE* data_file)
 		MD5_Final(digest, &md5_hash);
 		for (int m = 0; m < 16; m++)
 		{
-			//write to file
-			fprintf(data_file, "%02x", digest[m]);
+			fprintf(dataa_file, "%02x", digest[m]);
 		}
 		cout << file_list[i] << endl;
-		fprintf(data_file, "%s", file_list[i].c_str());
-		fprintf(data_file, "\n");
+		fprintf(dataa_file, " %s", file_list[i].c_str());
+		fprintf(dataa_file, "\n");
 		memset(&digest, 0, sizeof(digest));
 		fclose(file);
 	}
@@ -142,7 +156,6 @@ int ComputeMd5(vector<string> file_list, FILE* data_file)
 
 int main()
 {
-	vector<string> filenames;
-	filenames = FindFiles(); // Search and return all .exe files on the system in a vector
+	FindFiles(); // Search and return all .exe files on the system in a vector
 	return 0;
 }
