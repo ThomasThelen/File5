@@ -4,14 +4,10 @@ Project Page: https://github.com/ThomasThelen/File5
 
 Explanation: 
 			The program finds files by looping through directories and storing them in vectors.
-			Once the vector reaches the allotted size, it is sent to the MD5 function where openssl is implemented.
-			The MD5 and file path are then written to a file where furthen analysis can be performed.
+			Once the vector reaches the allotted size, it is sent to the MD5 function where openssl is used.
+			The MD5 and file path are then written to a file.
 
-Further Possibilities:
-					 Use python to check the sums against a database online or on disk.	 
 */
-
-
 
 #include "stdafx.h"
 #include <iostream>
