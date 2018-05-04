@@ -7,6 +7,6 @@ One method of malware detection is by creating an MD5 hash of aa known virus. Wh
 <br>
 
 ## This Program
-First, This program scans the filesystem and fills a data structure with a list of all .exe files.
-<br>
-Next, OpenSSL is implimented to generate MD5 signatures of the files. The signature along with the file path is included in a text file. The malware researcher can then use the file to search against malicious signatures in a database. 
+This program uses the windows API with C++ to iterate over a number of directories. As it iterates, it fills a vector with the file paths. Once the vector hits a certain size, the files are md5'd.
+
+There are much cleaner ways to do this with C++ 17's filesystem library.
