@@ -24,12 +24,17 @@ Explanation:
 #include <openssl/md5.h>
 #include <errno.h>
 
+#include <filesystem>
+
+
 using std::vector;
 using std::string;
 using std::cout;
 using std::endl;
+namespace fs = std::experimental::filesystem;
 
-int ComputeMd5(vector<string> file_list, FILE* data_file);
+
+int ComputeMd5(vector<string>& file_list, FILE* data_file);
 
 void FindFiles()
 {
@@ -110,7 +115,7 @@ void FindFiles()
 	FindClose(searcher_handle);
 }
 
-int ComputeMd5(vector<string> file_list, FILE* dataa_file)
+int ComputeMd5(vector<string>& file_list, FILE* dataa_file)
 {
 	FILE *file;
 	MD5_CTX  md5_hash;
@@ -119,7 +124,7 @@ int ComputeMd5(vector<string> file_list, FILE* dataa_file)
 	unsigned char file_buffer[100000];
 	unsigned char digest[16];
 
-	for (unsigned int i = 0; i < file_list.size(); i++)
+	for (auto i = 0; i < file_list.size(); i++)
 	{
 	Top:
 		file = fopen(file_list[i].c_str(), "rb");
